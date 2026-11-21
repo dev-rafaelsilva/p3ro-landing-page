@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# fotos originais em alta (ficam no OneDrive/disco; o site usa /public/opt otimizado)
+/public/fotos/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
