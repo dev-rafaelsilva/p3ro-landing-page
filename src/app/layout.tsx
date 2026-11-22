@@ -1,20 +1,13 @@
-﻿import type { Metadata } from "next";
-import { Sora, Inter, Caveat, Fraunces } from "next/font/google";
+import type { Metadata } from "next";
+import { Sora, Inter, Fraunces } from "next/font/google";
 import { site } from "@/data/site";
 import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
 
-const caveat = Caveat({
-  variable: "--font-caveat",
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  display: "swap",
-});
-
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["300", "400", "500"],
   style: ["normal", "italic"],
   display: "swap",
 });
@@ -22,14 +15,14 @@ const fraunces = Fraunces({
 const sora = Sora({
   variable: "--font-sora",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -89,13 +82,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className={`${sora.variable} ${inter.variable} ${caveat.variable} ${fraunces.variable}`}>
+    <html lang="pt-BR" className={`${sora.variable} ${inter.variable} ${fraunces.variable}`}>
       <body>
         <a href="#conteudo" className="skip-link">
           Pular para o conteúdo
         </a>
         <SmoothScroll />
-        {children}
+
+        {/* Conteúdo */}
+        <div id="site-content">
+          {children}
+        </div>
+
         <div className="grain" aria-hidden="true" />
         <script
           type="application/ld+json"

@@ -26,21 +26,6 @@ export default function Contact() {
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  const handleEmail = () => {
-    if (name.trim() === "") {
-      setError(true);
-      return;
-    }
-    setError(false);
-    const subject = `Orçamento — ${service}`;
-    const body = `Olá! Meu nome é ${name.trim()}. Tenho interesse em: ${service}.${
-      date.trim() ? ` Data desejada: ${date.trim()}.` : ""
-    }`;
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-  };
-
   return (
     <section id="contato" aria-labelledby="contato-title" className="section">
       <div
@@ -52,12 +37,10 @@ export default function Contact() {
           <h2
             id="contato-title"
             className="title-lg mt-4"
-            style={{ fontSize: "clamp(34px,5.6vw,60px)" }}
           >
             {contact.title}
           </h2>
           <p className="lead mt-6 max-w-[520px]">{contact.text}</p>
-          <p className="mt-4 text-cream">{contact.contactLine}</p>
         </motion.div>
 
         <motion.div {...reveal}>
@@ -125,9 +108,6 @@ export default function Contact() {
             <div className="flex flex-col gap-3">
               <button type="submit" className="btn btn-primary w-full">
                 {contact.submit}
-              </button>
-              <button type="button" onClick={handleEmail} className="btn btn-outline w-full">
-                Enviar por e-mail
               </button>
             </div>
           </form>

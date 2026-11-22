@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { products } from "@/data/site";
 import { useReveal } from "./anim";
+import { BLUR_AMBER } from "@/lib/blur";
 
 export default function Products() {
   const reveal = useReveal();
@@ -33,6 +34,8 @@ export default function Products() {
                   width={1029}
                   height={1400}
                   loading="lazy"
+                  placeholder="blur"
+                  blurDataURL={BLUR_AMBER}
                   sizes="(max-width: 620px) 60vw, 300px"
                   className="zoomimg h-full w-full object-cover"
                 />

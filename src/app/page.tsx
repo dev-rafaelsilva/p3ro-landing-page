@@ -3,25 +3,27 @@ import ScrollProgress from "@/components/ScrollProgress";
 import CustomCursor from "@/components/CustomCursor";
 import Header from "@/components/Header";
 import HeroWebGL from "@/components/HeroWebGL";
-import Stats from "@/components/Stats";
-import Trust from "@/components/Trust";
 import Marquee from "@/components/Marquee";
-import Products from "@/components/Products";
-import Manifesto from "@/components/Manifesto";
 import GalleryEditorial from "@/components/GalleryEditorial";
+import Products from "@/components/Products";
+import PolaroidGallery from "@/components/PolaroidGallery";
+import Process from "@/components/Process";
+import Manifesto from "@/components/Manifesto";
+import Area from "@/components/Area";
+import Stats from "@/components/Stats";
 import BeforeAfter from "@/components/BeforeAfter";
 import Services from "@/components/Services";
-import Process from "@/components/Process";
 import Pricing from "@/components/Pricing";
-import About from "@/components/About";
-import PolaroidGallery from "@/components/PolaroidGallery";
 import Testimonials from "@/components/Testimonials";
+import About from "@/components/About";
 import InstagramGrid from "@/components/InstagramGrid";
 import Faq from "@/components/Faq";
-import Area from "@/components/Area";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import ChatWidget from "@/components/ChatWidget";
+import BackToTop from "@/components/BackToTop";
+import MobileBar from "@/components/MobileBar";
 
 export default function Home() {
   return (
@@ -32,26 +34,28 @@ export default function Home() {
       <Header />
       <main id="conteudo">
         <HeroWebGL />
-        <Stats />
-        <Trust />
         <Marquee />
-        <Products />
-        <Manifesto />
         <GalleryEditorial />
+        <Products />
+        <PolaroidGallery />
+        <Process />
+        <Manifesto />
+        <Area />
+        <Stats />
         <BeforeAfter />
         <Services />
-        <Process />
         <Pricing />
-        <About />
-        <PolaroidGallery />
         <Testimonials />
+        <About />
         <InstagramGrid />
         <Faq />
-        <Area />
         <Contact />
       </main>
       <Footer />
       <WhatsAppFloat />
+      <ChatWidget />
+      <BackToTop />
+      <MobileBar />
     </>
   );
 }

@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { site, nav, footer } from "@/data/site";
+import { useMagnetic } from "@/hooks/useMagnetic";
 
 export default function Footer() {
   const wpp = `https://wa.me/55${site.whatsapp}`;
+  const magCta = useMagnetic<HTMLAnchorElement>();
 
   return (
     <footer className="relative overflow-hidden border-t border-lineSoft">
@@ -12,6 +16,7 @@ export default function Footer() {
           <h2 className="title-xl">{footer.ctaTitle}</h2>
           <p className="lead mt-5 max-w-xl">{footer.ctaText}</p>
           <a
+            ref={magCta}
             href={wpp}
             target="_blank"
             rel="noopener noreferrer"
@@ -63,20 +68,15 @@ export default function Footer() {
                   @{site.instagram}
                 </a>
               </li>
-              <li>
-                <a href={`mailto:${site.email}`} className="text-cream transition-colors hover:text-acc">
-                  {site.email}
-                </a>
-              </li>
             </ul>
           </div>
         </div>
 
-        {/* Wordmark gigante */}
+        {/* Wordmark gigante — Fraunces italic */}
         <div
           aria-hidden="true"
           className="mt-14 select-none text-cream"
-          style={{ fontFamily: "var(--font-sora)", fontWeight: 700, letterSpacing: "-0.04em", lineHeight: 0.8, fontSize: "clamp(72px,18vw,220px)", opacity: 0.06 }}
+          style={{ fontFamily: "var(--font-fraunces), Georgia, serif", fontWeight: 300, fontStyle: "italic", letterSpacing: "-0.04em", lineHeight: 0.8, fontSize: "clamp(48px,10vw,120px)", opacity: 0.04 }}
         >
           {site.studio}
         </div>

@@ -4,84 +4,196 @@ import { motion } from "framer-motion";
 import { pricing } from "@/data/site";
 import { useReveal } from "./anim";
 
-const CARD = "#FFFBF4";
-const INK = "#1A0F0A";
-const LINE = "#d3bfa6";
-const SECONDARY = "#4d3a2d";
-
-function Package({ item }: { item: (typeof pricing.packages)[number] }) {
-  const reveal = useReveal();
-  const hi = item.highlight;
-  return (
-    <motion.div
-      {...reveal}
-      className="flex flex-col rounded-2xl border p-8"
-      style={{
-        background: hi ? "var(--color-acc)" : CARD,
-        borderColor: hi ? "var(--color-acc)" : LINE,
-        color: INK,
-      }}
-    >
-      {hi && (
-        <span className="mb-4 inline-flex w-fit rounded-full bg-[#1A0F0A] px-3 py-1 text-[12px] font-semibold text-cream">
-          Mais escolhido
-        </span>
-      )}
-      <h3 style={{ fontFamily: "var(--font-sora)", fontWeight: 600, fontSize: 24 }}>{item.name}</h3>
-      <p className="mt-2 text-[15px]" style={{ color: hi ? "rgba(26,15,10,.8)" : SECONDARY }}>
-        {item.description}
-      </p>
-      <p className="mt-5" style={{ fontFamily: "var(--font-sora)", fontWeight: 700, fontSize: 32 }}>
-        {item.price}
-      </p>
-      <ul className="mt-6 flex flex-1 flex-col gap-3">
-        {item.features.map((f) => (
-          <li key={f} className="flex items-start gap-2 text-[15px]" style={{ color: hi ? INK : SECONDARY }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="mt-0.5 flex-none" aria-hidden="true">
-              <path d="M5 12l4.5 4.5L19 7" stroke={hi ? "#1A0F0A" : "var(--color-acc)"} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            {f}
-          </li>
-        ))}
-      </ul>
-      <a
-        href="#contato"
-        className="btn mt-8 w-full"
-        style={
-          hi
-            ? { background: "#1A0F0A", color: "var(--color-cream)", border: "1px solid #1A0F0A" }
-            : { background: "var(--color-acc)", color: "#1A0F0A", border: "1px solid var(--color-acc)" }
-        }
-      >
-        Quero este
-      </a>
-    </motion.div>
-  );
-}
-
 export default function Pricing() {
   const reveal = useReveal();
 
   return (
     <section id="precos" aria-labelledby="precos-title" className="section-light">
       <div className="container">
-        <motion.div {...reveal} className="max-w-2xl">
+        <motion.div {...reveal} style={{ maxWidth: "52ch", marginBottom: "clamp(48px, 7vw, 88px)" }}>
           <p className="eyebrow">{pricing.eyebrow}</p>
-          <h2 id="precos-title" className="title-lg mt-4">
+          <h2
+            id="precos-title"
+            className="title-lg"
+            style={{ marginTop: "clamp(14px, 2vw, 20px)", color: "var(--color-light-ink)" }}
+          >
             {pricing.title}
           </h2>
         </motion.div>
 
-        <div className="mt-10 grid grid-cols-3 gap-6 max-[900px]:grid-cols-1">
-          {pricing.packages.map((item) => (
-            <Package key={item.name} item={item} />
+        {/* Layout: 3 cards editoriais — sem simetria forçada */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "clamp(16px, 2.5vw, 32px)",
+          }}
+          className="max-[800px]:!grid-cols-1"
+        >
+          {pricing.packages.map((pkg) => (
+            <PriceCard key={pkg.name} item={pkg} />
           ))}
         </div>
 
-        <p className="mt-6 text-[14px]" style={{ color: SECONDARY }}>
+        <motion.p
+          {...reveal}
+          style={{
+            marginTop: 24,
+            fontSize: 13,
+            color: "var(--color-light-mut)",
+            fontFamily: "var(--font-sora)",
+            letterSpacing: "0.06em",
+          }}
+        >
           {pricing.note}
-        </p>
+        </motion.p>
       </div>
     </section>
+  );
+}
+
+function PriceCard({ item }: { item: (typeof pricing.packages)[number] }) {
+  const reveal = useReveal();
+  const hi = item.highlight;
+
+  return (
+    <motion.div
+      {...reveal}
+      className={`price-card${hi ? " highlight" : ""}`}
+      style={{ color: "var(--color-light-ink)" }}
+    >
+      {hi && (
+        <span
+          style={{
+            display: "inline-block",
+            marginBottom: 20,
+            fontFamily: "var(--font-sora)",
+            fontSize: 10,
+            fontWeight: 600,
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            color: "var(--color-light-acc)",
+            padding: "5px 12px",
+            border: "1px solid var(--color-light-acc)",
+            borderRadius: 999,
+          }}
+        >
+          Mais escolhido
+        </span>
+      )}
+
+      {/* Duração */}
+      <p
+        style={{
+          fontFamily: "var(--font-sora)",
+          fontSize: 11,
+          fontWeight: 500,
+          letterSpacing: "0.28em",
+          textTransform: "uppercase",
+          color: "var(--color-light-mut)",
+          marginBottom: 10,
+        }}
+      >
+        {item.duration}
+      </p>
+
+      {/* Nome + preço em linha */}
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
+        <h3
+          style={{
+            fontFamily: "var(--font-fraunces)",
+            fontWeight: 400,
+            fontSize: "clamp(26px, 3.2vw, 40px)",
+            letterSpacing: "-0.02em",
+            color: "var(--color-light-ink)",
+          }}
+        >
+          {item.name}
+        </h3>
+        <span
+          style={{
+            fontFamily: "var(--font-sora)",
+            fontWeight: 600,
+            fontSize: "clamp(22px, 2.6vw, 32px)",
+            color: hi ? "var(--color-light-acc)" : "var(--color-light-ink)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {item.price}
+        </span>
+      </div>
+
+      {/* Divisor */}
+      <div
+        style={{
+          height: 1,
+          background: "var(--color-light-line)",
+          margin: "20px 0",
+        }}
+      />
+
+      <p
+        style={{
+          fontSize: 15,
+          color: "var(--color-light-mut)",
+          lineHeight: 1.6,
+          marginBottom: 24,
+        }}
+      >
+        {item.description}
+      </p>
+
+      <ul style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
+        {item.features.map((f) => (
+          <li
+            key={f}
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 10,
+              fontSize: 14,
+              color: "var(--color-light-mut)",
+            }}
+          >
+            <span
+              style={{
+                flexShrink: 0,
+                width: 16,
+                height: 16,
+                marginTop: 2,
+                borderRadius: "50%",
+                border: `1px solid ${hi ? "var(--color-light-acc)" : "var(--color-light-line)"}`,
+                display: "grid",
+                placeItems: "center",
+              }}
+            >
+              <span
+                style={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: "50%",
+                  background: hi ? "var(--color-light-acc)" : "var(--color-light-mut)",
+                }}
+              />
+            </span>
+            {f}
+          </li>
+        ))}
+      </ul>
+
+      <a
+        href="#contato"
+        className="btn"
+        style={{
+          width: "100%",
+          background: hi ? "var(--color-light-ink)" : "transparent",
+          color: hi ? "var(--color-cream)" : "var(--color-light-ink)",
+          border: `1px solid ${hi ? "var(--color-light-ink)" : "var(--color-light-line)"}`,
+        }}
+        data-cursor
+      >
+        Quero este
+      </a>
+    </motion.div>
   );
 }

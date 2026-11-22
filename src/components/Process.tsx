@@ -1,105 +1,197 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { howItWorks as proc } from "@/data/site";
+import { useEffect, useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { gsap } from "@/lib/gsap";
 import { useReveal } from "./anim";
+
+const STEPS = [
+  {
+    num: "01",
+    icon: "💬",
+    title: "Briefing",
+    text: "Conversa sobre o cardápio, o público e onde as fotos serão usadas. Definimos juntos o estilo e a direção de arte.",
+  },
+  {
+    num: "02",
+    icon: "📸",
+    title: "Produção",
+    text: "Sessão no seu espaço ou em estúdio. Cuido da luz, composição, louças de apoio e direção de arte.",
+  },
+  {
+    num: "03",
+    icon: "🎨",
+    title: "Edição",
+    text: "Tratamento profissional de cada imagem: cor, contraste, nitidez e retoque para despertar apetite.",
+  },
+  {
+    num: "04",
+    icon: "🚀",
+    title: "Entrega",
+    text: "Arquivos prontos para cardápio, delivery, redes sociais e mídia. Prazo de 5 a 7 dias úteis.",
+  },
+];
 
 export default function Process() {
   const reveal = useReveal();
-  const [active, setActive] = useState(0);
-  const refs = useRef<(HTMLDivElement | null)[]>([]);
+  const reduce = useReducedMotion();
+  const lineRef = useRef<HTMLDivElement>(null);
+  const stepsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const i = Number((entry.target as HTMLElement).dataset.index);
-            setActive(i);
-          }
-        });
-      },
-      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
-    );
-    refs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+    if (reduce || !stepsRef.current || !lineRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Linha de progresso cresce da esquerda
+      gsap.fromTo(
+        lineRef.current,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: stepsRef.current,
+            start: "top 70%",
+            end: "top 20%",
+            scrub: 0.8,
+          },
+        }
+      );
+
+      // Cada step entra com stagger
+      const steps = gsap.utils.toArray<HTMLElement>(".proc-step", stepsRef.current!);
+      gsap.fromTo(
+        steps,
+        { opacity: 0, y: 32 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          stagger: 0.14,
+          scrollTrigger: { trigger: stepsRef.current, start: "top 78%" },
+        }
+      );
+    });
+
+    return () => ctx.revert();
+  }, [reduce]);
 
   return (
-    <section id="processo" aria-labelledby="processo-title" className="section-plain relative overflow-hidden">
-      <div className="container relative">
-        <motion.div {...reveal} className="max-w-2xl">
-          <p className="eyebrow">{proc.eyebrow}</p>
-          <h2 id="processo-title" className="title-lg mt-4">
-            {proc.title}
+    <section
+      aria-labelledby="process-title"
+      style={{
+        paddingBlock: "clamp(52px, 8vw, 96px)",
+        borderTop: "1px solid var(--color-lineSoft)",
+        position: "relative",
+      }}
+    >
+      <div className="container">
+        <motion.div {...reveal} style={{ marginBottom: "clamp(36px, 5vw, 60px)" }}>
+          <p className="eyebrow">Como funciona</p>
+          <h2 id="process-title" className="title-lg" style={{ marginTop: "clamp(10px, 1.5vw, 16px)", maxWidth: "22ch" }}>
+            Do briefing à entrega
           </h2>
         </motion.div>
 
-        <div className="mt-12 grid grid-cols-2 gap-14 max-[900px]:grid-cols-1 max-[900px]:gap-0">
-          {/* Imagem fixa (desktop) */}
-          <div className="max-[900px]:hidden">
-            <div className="sticky top-28">
-              <div className="relative overflow-hidden rounded-2xl border border-line" style={{ aspectRatio: "4 / 5" }}>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={active}
-                    initial={{ opacity: 0, scale: 1.04 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="absolute inset-0"
-                  >
-                    <Image
-                      src={proc.steps[active].image.src}
-                      alt={proc.steps[active].image.alt}
-                      fill
-                      sizes="(max-width: 900px) 100vw, 560px"
-                      className="object-cover"
-                    />
-                  </motion.div>
-                </AnimatePresence>
-                <span className="watermark" style={{ right: 20, bottom: -10, fontSize: 180 }}>
-                  {proc.steps[active].num}
-                </span>
-              </div>
-            </div>
+        {/* Steps container */}
+        <div ref={stepsRef} style={{ position: "relative" }}>
+          {/* Linha de progresso (desktop) */}
+          <div
+            className="max-[768px]:hidden"
+            style={{
+              position: "absolute",
+              top: 24,
+              left: "12.5%",
+              right: "12.5%",
+              height: 1,
+              background: "var(--color-lineSoft)",
+              zIndex: 0,
+            }}
+          >
+            <div
+              ref={lineRef}
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to right, var(--color-brand), var(--color-acc))",
+                transformOrigin: "left center",
+                transform: "scaleX(0)",
+              }}
+            />
           </div>
 
-          {/* Passos */}
-          <div>
-            {proc.steps.map((step, i) => (
+          {/* Grid de steps */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gap: "clamp(20px, 3vw, 32px)",
+            }}
+            className="max-[768px]:!grid-cols-1 max-[768px]:gap-0"
+          >
+            {STEPS.map((step) => (
               <div
                 key={step.num}
-                data-index={i}
-                ref={(el) => {
-                  refs.current[i] = el;
-                }}
-                className="flex min-h-[60vh] flex-col justify-center border-t border-lineSoft py-10 first:border-t-0 max-[900px]:min-h-0"
+                className="proc-step max-[768px]:flex max-[768px]:gap-5 max-[768px]:border-l max-[768px]:border-lineSoft max-[768px]:pl-5 max-[768px]:pb-8 max-[768px]:ml-6"
+                style={{ position: "relative", textAlign: "center" }}
               >
-                <span
-                  className="text-acc"
-                  style={{ fontFamily: "var(--font-sora)", fontWeight: 700, fontSize: 44, lineHeight: 1, opacity: active === i ? 1 : 0.4 }}
+                {/* Círculo numerado */}
+                <div
+                  className="max-[768px]:shrink-0"
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: "50%",
+                    background: "var(--color-bg2)",
+                    border: "1px solid var(--color-line)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "0 auto clamp(16px,2vw,24px)",
+                    position: "relative",
+                    zIndex: 1,
+                    fontSize: 20,
+                  }}
                 >
-                  {step.num}
-                </span>
-                <h3 className="mt-3" style={{ fontFamily: "var(--font-sora)", fontWeight: 600, fontSize: "clamp(22px,3vw,32px)", color: "var(--color-cream)" }}>
-                  {step.title}
-                </h3>
-                <p className="mt-3 max-w-[460px] text-mut">{step.text}</p>
+                  {step.icon}
+                </div>
 
-                {/* Imagem inline (mobile) */}
-                <div className="mt-6 hidden overflow-hidden rounded-2xl border border-line max-[900px]:block" style={{ aspectRatio: "4 / 5" }}>
-                  <Image
-                    src={step.image.src}
-                    alt={step.image.alt}
-                    width={800}
-                    height={1000}
-                    loading="lazy"
-                    sizes="100vw"
-                    className="h-full w-full object-cover"
-                  />
+                <div className="max-[768px]:text-left">
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sora)",
+                      fontSize: 10,
+                      fontWeight: 500,
+                      letterSpacing: "0.26em",
+                      textTransform: "uppercase",
+                      color: "var(--color-acc)",
+                      marginBottom: 8,
+                    }}
+                  >
+                    {step.num}
+                  </p>
+                  <h3
+                    style={{
+                      fontFamily: "var(--font-fraunces)",
+                      fontWeight: 400,
+                      fontSize: "clamp(16px, 2vw, 22px)",
+                      letterSpacing: "-0.01em",
+                      color: "var(--color-cream)",
+                      marginBottom: 10,
+                    }}
+                  >
+                    {step.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: 13,
+                      color: "var(--color-mut)",
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    {step.text}
+                  </p>
                 </div>
               </div>
             ))}

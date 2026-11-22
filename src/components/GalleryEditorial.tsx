@@ -6,6 +6,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { gallery } from "@/data/site";
 import { useReveal } from "./anim";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { BLUR_DARK } from "@/lib/blur";
 
 // Ritmo editorial assimétrico (desktop, grid de 12 colunas).
 const SPANS = ["md:col-span-7", "md:col-span-5", "md:col-span-5", "md:col-span-7", "md:col-span-6", "md:col-span-6"];
@@ -18,6 +19,30 @@ export default function GalleryEditorial() {
   const [index, setIndex] = useState<number | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+
+  // Skew baseado na velocidade do scroll
+  useEffect(() => {
+    if (reduce || !gridRef.current) return;
+    let lastY = window.scrollY;
+    let skew = 0;
+    let rafId = 0;
+
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+    const tick = () => {
+      const y = window.scrollY;
+      const velocity = y - lastY;
+      lastY = y;
+      skew = lerp(skew, Math.max(-3, Math.min(3, velocity * 0.08)), 0.14);
+      if (Math.abs(skew) > 0.01 && gridRef.current) {
+        gsap.set(gridRef.current, { skewY: skew });
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [reduce]);
 
   const items = useMemo(
     () => (filter === "Todos" ? gallery.items : gallery.items.filter((i) => i.category === filter)),
@@ -139,6 +164,8 @@ export default function GalleryEditorial() {
                     alt={item.alt}
                     fill
                     loading="lazy"
+                    placeholder="blur"
+                    blurDataURL={BLUR_DARK}
                     sizes="(max-width: 768px) 50vw, 45vw"
                     className="zoomimg object-cover"
                   />

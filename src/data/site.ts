@@ -2,24 +2,25 @@ export const site = {
   studio: "P3ro",
   logo: "/logo/Logo3.jpeg",
   city: "Ribeirão Preto",
-  email: "[E-MAIL]",
-  instagram: "[INSTAGRAM]",
+  email: "contato@p3ro.com.br",
+  instagram: "by.p3ro",
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP ?? "16993839889",
   year: new Date().getFullYear(),
 } as const;
 
 export const nav = [
-  { label: "Produtos", href: "#produtos" },
   { label: "Portfólio", href: "#portfolio" },
   { label: "Serviços", href: "#servicos" },
   { label: "Preços", href: "#precos" },
+  { label: "Sobre", href: "#sobre" },
   { label: "Contato", href: "#contato" },
 ] as const;
 
 export const hero = {
-  eyebrow: "Fotografia gastronômica",
+  eyebrow: "Fotografia gastronômica · Ribeirão Preto",
   title: "Seu prato merece ser desejado antes da primeira garfada.",
-  text: "Imagens autorais para restaurantes, confeitarias e marcas de alimentos que querem vender mais com fotos que despertam apetite. Atendemos Ribeirão Preto e região.",
+  text: "Imagens autorais para restaurantes, confeitarias e marcas de alimentos que querem vender mais com fotos que despertam apetite.",
+  availability: "Agenda aberta — Jan/2027",
   primary: "Solicitar orçamento",
   secondary: "Ver portfólio",
   image: {
@@ -83,29 +84,23 @@ export const services = {
     {
       num: "01",
       title: "Cardápio e delivery",
-      text: "Fotos de pratos para cardápio, iFood e site. [DESCRIÇÃO / QUANTIDADE DE FOTOS]",
+      text: "Fotos de pratos para cardápio, iFood e site. Composição, luz e cor pensadas para converter visualização em pedido.",
     },
     {
       num: "02",
       title: "Produto e embalagem",
-      text: "Packshots limpos para catálogo, e-commerce e redes. [DESCRIÇÃO]",
+      text: "Packshots limpos para catálogo, e-commerce e redes. Fundo neutro ou ambiente — definido conforme a marca.",
     },
     {
       num: "03",
       title: "Redes sociais",
-      text: "Conteúdo recorrente para Instagram e vídeos curtos. [DESCRIÇÃO]",
+      text: "Conteúdo recorrente para Instagram e vídeos curtos. Feed coeso, identidade visual forte.",
     },
     {
       num: "04",
       title: "Campanhas e eventos",
-      text: "Produção com direção de arte para lançamentos e eventos. [DESCRIÇÃO]",
+      text: "Produção com direção de arte para lançamentos e eventos. Conceito, composição e entrega editorial.",
     },
-  ],
-  steps: [
-    { num: "01", title: "Briefing", text: "Entendemos o cardápio, o público e onde as fotos serão usadas." },
-    { num: "02", title: "Direção e produção", text: "Estilo, luz, louças e composição definidos antes da sessão." },
-    { num: "03", title: "Sessão", text: "No seu espaço ou em estúdio, com o prato no ponto." },
-    { num: "04", title: "Entrega", text: "Tratamento e arquivos prontos para cada canal. [PRAZO]" },
   ],
 } as const;
 
@@ -119,16 +114,16 @@ export const about = {
     height: 1599,
   },
   paragraphs: [
-    "Ajudo restaurantes de alto padrão a atrair clientes por meio de marketing criativo, produção audiovisual e estratégias de posicionamento — fazendo com que a experiência de cada casa alcance mais gente através de fotos, vídeos, sites e mídia, e seja comentada em todo canto.",
-    "O trabalho é guiado por criatividade, excelência, autenticidade e respeito à identidade de cada restaurante, com a visão de criar marcas que se tornam assunto dentro e fora do digital. Atende Ribeirão Preto e região, com disponibilidade para viagens.",
+    "Ajudo restaurantes de alto padrão a atrair clientes por meio de marketing criativo, produção audiovisual e estratégias de posicionamento — fazendo com que a experiência de cada casa alcance mais gente através de fotos, vídeos, sites e mídia.",
+    "O trabalho é guiado por criatividade, excelência, autenticidade e respeito à identidade de cada restaurante. Atende Ribeirão Preto e região, com disponibilidade para viagens.",
   ],
 } as const;
 
 export const contact = {
   eyebrow: "Contato",
   title: "Vamos fotografar o seu próximo prato?",
-  text: "Conte sobre seu projeto e receba uma proposta personalizada. [PRAZO DE RESPOSTA]",
-  contactLine: "[E-MAIL] · @[INSTAGRAM]",
+  text: "Conte sobre seu projeto e receba uma proposta personalizada. Respondo em até 24h.",
+  contactLine: "contato@p3ro.com.br · @by.p3ro",
   services: [
     "Cardápio e delivery",
     "Produto e embalagem",
@@ -158,109 +153,35 @@ export const marquee = {
   ],
 } as const;
 
-export const howItWorks = {
-  eyebrow: "Como funciona",
-  title: "Do briefing à entrega",
-  steps: [
-    {
-      num: "01",
-      title: "Briefing",
-      text: "Entendemos o cardápio, o público e onde as fotos serão usadas.",
-      image: { src: "/opt/galeria-3.webp", alt: "Planejamento da sessão de fotografia gastronômica" },
-    },
-    {
-      num: "02",
-      title: "Direção e produção",
-      text: "Estilo, luz, louças e composição definidos antes da sessão.",
-      image: { src: "/opt/faixa-luz.webp", alt: "Direção de luz sobre as bombas de chocolate" },
-    },
-    {
-      num: "03",
-      title: "Sessão",
-      text: "No seu espaço ou em estúdio, com o prato no ponto.",
-      image: { src: "/opt/galeria-1.webp", alt: "Sessão de fotografia com calda de chocolate" },
-    },
-    {
-      num: "04",
-      title: "Entrega",
-      text: "Tratamento e arquivos prontos para cada canal. [PRAZO]",
-      image: { src: "/opt/hero.webp", alt: "Foto final tratada pronta para entrega" },
-    },
-  ],
-} as const;
-
-// Números ilustrativos — AJUSTE para os valores reais do Gustavo.
-export const stats = {
-  items: [
-    { value: 5, suffix: "+", label: "Anos de experiência" },
-    { value: 100, suffix: "+", label: "Ensaios realizados" },
-    { value: 50, suffix: "+", label: "Marcas atendidas" },
-    { value: 20, suffix: "k+", label: "Fotos entregues" },
-  ],
-} as const;
-
-export const beforeAfter = {
-  eyebrow: "Tratamento de imagem",
-  title: "Arraste e veja a diferença",
-  text: "Do clique ao resultado final: cor, luz e textura ajustados para dar água na boca.",
-  before: { src: "/opt/galeria-2.webp", alt: "Foto gastronômica antes do tratamento" },
-  after: { src: "/opt/galeria-1.webp", alt: "Foto gastronômica depois do tratamento" },
-  labelBefore: "Antes",
-  labelAfter: "Depois",
-} as const;
-
-// Preços ilustrativos — AJUSTE para os valores e pacotes reais.
 export const pricing = {
-  eyebrow: "Pacotes",
-  title: "Planos para cada fase do seu negócio",
-  note: "Valores de referência. O orçamento final é personalizado conforme o projeto.",
+  eyebrow: "Preços",
+  title: "Transparência desde o primeiro contato",
+  note: "Orçamento final personalizado conforme o projeto.",
   packages: [
     {
-      name: "Essencial",
-      price: "[R$ VALOR]",
-      description: "Ideal para começar a vender melhor no delivery.",
+      name: "Flash",
+      duration: "2 horas",
+      price: "R$ 700",
+      description: "Ideal para um produto específico ou conteúdo pontual para redes.",
       highlight: false,
-      features: ["Até [N] pratos", "Fotos tratadas em alta resolução", "Formatos para iFood e redes", "Entrega em [PRAZO]"],
+      features: ["Até 1 produto / prato", "Fotos tratadas em alta resolução", "Entrega em 5 dias úteis"],
     },
     {
-      name: "Profissional",
-      price: "[R$ VALOR]",
-      description: "O favorito de quem quer um cardápio completo.",
+      name: "Meio dia",
+      duration: "4 horas",
+      price: "R$ 850",
+      description: "O favorito de quem quer renovar o cardápio ou lançar uma linha.",
       highlight: true,
-      features: ["Até [N] pratos", "Direção de arte e composição", "Versões para cardápio, site e redes", "Fotos de ambiente do local", "Entrega em [PRAZO]"],
+      features: ["Múltiplos produtos / pratos", "Direção de arte e composição", "Versões para cardápio, site e redes", "Entrega em 7 dias úteis"],
     },
     {
-      name: "Marca",
-      price: "[R$ VALOR]",
-      description: "Produção completa para campanhas e lançamentos.",
+      name: "Diária",
+      duration: "8 horas",
+      price: "R$ 1.300",
+      description: "Produção completa para campanhas, lançamentos e coleções.",
       highlight: false,
-      features: ["Pratos ilimitados no dia", "Conceito e direção de arte", "Pacote para campanha e mídia", "Acompanhamento do projeto", "Entrega prioritária"],
+      features: ["Volume completo no dia", "Conceito e direção de arte", "Pacote para campanha e mídia", "Acompanhamento do projeto", "Entrega prioritária"],
     },
-  ],
-} as const;
-
-// Depoimentos ilustrativos — SUBSTITUA pelos reais (com autorização do cliente).
-export const testimonials = {
-  eyebrow: "Depoimentos",
-  title: "Resultados que falam por si",
-  items: [
-    { quote: "[Depoimento do cliente sobre o resultado das fotos e o impacto nas vendas.]", name: "[Nome do cliente]", role: "[Restaurante / marca]" },
-    { quote: "[Depoimento sobre a experiência de trabalhar com o Gustavo e a qualidade do material.]", name: "[Nome do cliente]", role: "[Restaurante / marca]" },
-    { quote: "[Depoimento sobre pontualidade, direção de arte ou retorno obtido com as imagens.]", name: "[Nome do cliente]", role: "[Restaurante / marca]" },
-  ],
-} as const;
-
-export const instagram = {
-  eyebrow: "No Instagram",
-  title: "Acompanhe os bastidores",
-  cta: "Seguir no Instagram",
-  images: [
-    { src: "/opt/galeria-1.webp", alt: "Publicação de bomba de chocolate com calda" },
-    { src: "/opt/galeria-3.webp", alt: "Publicação de bomba de chocolate em close" },
-    { src: "/opt/produto-coxinha-de-costela.webp", alt: "Publicação de embalagem de coxinha de costela" },
-    { src: "/opt/galeria-5.webp", alt: "Publicação de bomba de chocolate partida" },
-    { src: "/opt/produto-churros-doce-de-leite.webp", alt: "Publicação de embalagem de churros doce de leite" },
-    { src: "/opt/galeria-4.webp", alt: "Publicação de conjunto de bombas de chocolate" },
   ],
 } as const;
 
@@ -274,7 +195,7 @@ export const faq = {
     },
     {
       q: "Quanto tempo leva para receber as fotos?",
-      a: "O prazo de entrega varia conforme o volume do projeto. Combinamos tudo antes de começar e você acompanha cada etapa. [AJUSTE: informe o prazo médio do Gustavo.]",
+      a: "O prazo padrão é de 5 a 7 dias úteis após a sessão. Para projetos com demanda urgente, entre em contato para verificar disponibilidade.",
     },
     {
       q: "Atende em qual região?",
@@ -291,27 +212,6 @@ export const faq = {
   ],
 } as const;
 
-export const polaroid = {
-  eyebrow: "Bastidores",
-  title: "Momentos por trás da lente",
-  items: [
-    { src: "/opt/galeria-1.webp", alt: "Bomba de chocolate com calda escorrendo sobre tábua", caption: "Calda no ponto" },
-    { src: "/opt/galeria-5.webp", alt: "Bomba de chocolate partida mostrando recheio cremoso", caption: "Recheio perfeito" },
-    { src: "/opt/faixa-luz.webp", alt: "Bombas de chocolate sob luz dramática vista de cima", caption: "A luz certa" },
-    { src: "/opt/galeria-3.webp", alt: "Bomba de chocolate em close lateral com fundo cinza", caption: "Close lateral" },
-    { src: "/opt/galeria-4.webp", alt: "Conjunto de bombas de chocolate com lascas de chocolate", caption: "Composição final" },
-    { src: "/opt/galeria-2.webp", alt: "Bombas de chocolate vistas de cima em fileiras", caption: "Vista aérea" },
-  ],
-} as const;
-
-export const area = {
-  eyebrow: "Área de atuação",
-  title: "Baseado em Ribeirão Preto",
-  text: "Atendo toda a região de Ribeirão Preto e viajo para projetos especiais.",
-  mapSrc: "https://www.google.com/maps?q=Ribeir%C3%A3o%20Preto%2C%20SP&output=embed",
-} as const;
-
-// Texturas leves (WebGL) — usadas pelo hero e pelo storytelling 3D.
 export const webgl = {
   heroTex: "/opt/hero-tex.webp",
   heroAspect: 1050 / 1400,
