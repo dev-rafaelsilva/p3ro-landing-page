@@ -17,8 +17,9 @@ interface Props {
   style?: CSSProperties;
   delay?: number;
   stagger?: number;
-  /** If true, fires immediately without ScrollTrigger (e.g. hero) */
   eager?: boolean;
+  id?: string;
+  [key: string]: unknown;
 }
 
 type Line = { words: string[]; key: string };
@@ -31,6 +32,8 @@ export default function LineReveal({
   delay = 0,
   stagger = 0.12,
   eager = false,
+  id,
+  ...rest
 }: Props) {
   const containerRef = useRef<HTMLElement>(null);
   const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -104,7 +107,7 @@ export default function LineReveal({
   // Phase 1: render invisible words to measure line breaks
   if (lines.length === 0) {
     return (
-      <Tag ref={containerRef as never} className={className} style={{ ...style, visibility: "hidden" }}>
+      <Tag ref={containerRef as never} id={id} className={className} style={{ ...style, visibility: "hidden" }} {...rest}>
         {words.map((word, i) => (
           <span
             key={i}
@@ -120,7 +123,7 @@ export default function LineReveal({
 
   // Phase 2: render grouped lines with clip + inner
   return (
-    <Tag ref={containerRef as never} className={className} style={style}>
+    <Tag ref={containerRef as never} id={id} className={className} style={style} {...rest}>
       {lines.map((line, li) => (
         <span
           key={line.key}

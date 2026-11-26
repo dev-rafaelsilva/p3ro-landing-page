@@ -4,29 +4,26 @@ import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { gsap } from "@/lib/gsap";
 import { useReveal } from "./anim";
+import LineReveal from "./LineReveal";
 
 const STEPS = [
   {
     num: "01",
-    icon: "💬",
     title: "Briefing",
     text: "Conversa sobre o cardápio, o público e onde as fotos serão usadas. Definimos juntos o estilo e a direção de arte.",
   },
   {
     num: "02",
-    icon: "📸",
     title: "Produção",
     text: "Sessão no seu espaço ou em estúdio. Cuido da luz, composição, louças de apoio e direção de arte.",
   },
   {
     num: "03",
-    icon: "🎨",
     title: "Edição",
     text: "Tratamento profissional de cada imagem: cor, contraste, nitidez e retoque para despertar apetite.",
   },
   {
     num: "04",
-    icon: "🚀",
     title: "Entrega",
     text: "Arquivos prontos para cardápio, delivery, redes sociais e mídia. Prazo de 5 a 7 dias úteis.",
   },
@@ -89,9 +86,9 @@ export default function Process() {
       <div className="container">
         <motion.div {...reveal} style={{ marginBottom: "clamp(36px, 5vw, 60px)" }}>
           <p className="eyebrow">Como funciona</p>
-          <h2 id="process-title" className="title-lg" style={{ marginTop: "clamp(10px, 1.5vw, 16px)", maxWidth: "22ch" }}>
+          <LineReveal as="h2" id="process-title" className="title-lg" style={{ marginTop: "clamp(10px, 1.5vw, 16px)", maxWidth: "22ch" }}>
             Do briefing à entrega
-          </h2>
+          </LineReveal>
         </motion.div>
 
         {/* Steps container */}
@@ -151,26 +148,16 @@ export default function Process() {
                     margin: "0 auto clamp(16px,2vw,24px)",
                     position: "relative",
                     zIndex: 1,
-                    fontSize: 20,
+                    fontFamily: "var(--font-fraunces)",
+                    fontSize: 18,
+                    color: "var(--color-acc)",
+                    fontWeight: 300,
                   }}
                 >
-                  {step.icon}
+                  {step.num}
                 </div>
 
                 <div className="max-[768px]:text-left">
-                  <p
-                    style={{
-                      fontFamily: "var(--font-sora)",
-                      fontSize: 10,
-                      fontWeight: 500,
-                      letterSpacing: "0.26em",
-                      textTransform: "uppercase",
-                      color: "var(--color-acc)",
-                      marginBottom: 8,
-                    }}
-                  >
-                    {step.num}
-                  </p>
                   <h3
                     style={{
                       fontFamily: "var(--font-fraunces)",

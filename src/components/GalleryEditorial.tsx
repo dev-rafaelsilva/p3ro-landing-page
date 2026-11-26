@@ -79,16 +79,20 @@ export default function GalleryEditorial() {
     const ctx = gsap.context(() => {
       const tiles = gsap.utils.toArray<HTMLElement>(".ed-tile", gridRef.current!);
       tiles.forEach((tile, i) => {
+        const fromTop = i % 2 === 0;
         gsap.fromTo(
           tile,
-          { opacity: 0, y: 60 },
           {
+            clipPath: fromTop ? "inset(0% 0% 100% 0%)" : "inset(100% 0% 0% 0%)",
+            opacity: 0,
+          },
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
             opacity: 1,
-            y: 0,
-            duration: 0.9,
+            duration: 1.1,
             ease: "power3.out",
-            delay: (i % 2) * 0.08,
-            scrollTrigger: { trigger: tile, start: "top 88%" },
+            delay: (i % 3) * 0.07,
+            scrollTrigger: { trigger: tile, start: "top 92%" },
           }
         );
         const img = tile.querySelector(".ed-img");
@@ -149,7 +153,7 @@ export default function GalleryEditorial() {
           style={{ gridAutoFlow: "dense" }}
         >
           {items.map((item, i) => (
-            <div key={`${filter}-${item.src}`} className={`ed-tile gtilt-wrap ${SPANS[i % SPANS.length]}`}>
+            <div key={`${filter}-${item.src}`} className={`ed-tile gtilt-wrap ${SPANS[i % SPANS.length]}`} data-cursor-photo>
               <button
                 type="button"
                 onClick={() => setIndex(i)}

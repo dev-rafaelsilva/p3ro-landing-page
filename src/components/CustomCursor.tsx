@@ -42,13 +42,20 @@ export default function CustomCursor() {
     const over = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
       const labelled = target?.closest<HTMLElement>("[data-cursor-label]");
+      const photo = target?.closest<HTMLElement>("[data-cursor-photo]");
       const hit = target?.closest(INTERACTIVE);
       if (labelled) {
         dot.dataset.label = "true";
         dot.dataset.hover = "false";
+        dot.dataset.photo = "false";
         if (label) label.textContent = labelled.dataset.cursorLabel ?? "";
+      } else if (photo && !hit) {
+        dot.dataset.label = "false";
+        dot.dataset.photo = "true";
+        dot.dataset.hover = "false";
       } else {
         dot.dataset.label = "false";
+        dot.dataset.photo = "false";
         dot.dataset.hover = hit ? "true" : "false";
       }
     };

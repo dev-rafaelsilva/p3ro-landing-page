@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { site } from "@/data/site";
 import { useReveal } from "./anim";
@@ -21,6 +22,32 @@ const igUrl = `https://instagram.com/${site.instagram}`;
 
 export default function InstagramGrid() {
   const reveal = useReveal();
+  const [lightbox, setLightbox] = useState<number | null>(null);
+
+  const close = useCallback(() => setLightbox(null), []);
+
+  const prev = useCallback(() => {
+    setLightbox((i) => (i === null ? null : (i - 1 + POSTS.length) % POSTS.length));
+  }, []);
+
+  const next = useCallback(() => {
+    setLightbox((i) => (i === null ? null : (i + 1) % POSTS.length));
+  }, []);
+
+  useEffect(() => {
+    if (lightbox === null) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
+    document.addEventListener("keydown", handler);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handler);
+      document.body.style.overflow = "";
+    };
+  }, [lightbox, close, prev, next]);
 
   return (
     <section
@@ -80,17 +107,19 @@ export default function InstagramGrid() {
           className="max-[480px]:!grid-cols-2"
         >
           {POSTS.map((post, i) => (
-            <a
+            <button
               key={post.src}
-              href={igUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Ver post: ${post.alt}`}
+              onClick={() => setLightbox(i)}
+              aria-label={`Ampliar foto: ${post.alt}`}
               style={{
                 position: "relative",
                 display: "block",
                 aspectRatio: "1 / 1",
                 overflow: "hidden",
+                cursor: "zoom-in",
+                border: "none",
+                padding: 0,
+                background: "none",
               }}
               className="ig-cell group"
             >
@@ -157,7 +186,7 @@ export default function InstagramGrid() {
                   Recente
                 </span>
               )}
-            </a>
+            </button>
           ))}
         </motion.div>
 
@@ -167,6 +196,151 @@ export default function InstagramGrid() {
           .ig-cell:hover .ig-label { opacity: 1 !important; transform: translateY(0) !important; }
         `}</style>
       </div>
+
+      {/* Lightbox */}
+      {lightbox !== null && (
+        <div
+          onClick={close}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.92)",
+            zIndex: 10000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            animation: "igLbIn 0.22s ease",
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label={POSTS[lightbox].alt}
+        >
+          {/* Imagem */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: "relative",
+              maxWidth: "min(90vw, 860px)",
+              maxHeight: "90vh",
+              width: "100%",
+            }}
+          >
+            <Image
+              src={POSTS[lightbox].src}
+              alt={POSTS[lightbox].alt}
+              width={860}
+              height={860}
+              style={{
+                width: "100%",
+                height: "auto",
+                maxHeight: "90vh",
+                objectFit: "contain",
+                display: "block",
+              }}
+              priority
+            />
+            {/* Contador */}
+            <p
+              style={{
+                position: "absolute",
+                bottom: -28,
+                left: "50%",
+                transform: "translateX(-50%)",
+                fontFamily: "var(--font-sora)",
+                fontSize: 11,
+                letterSpacing: "0.14em",
+                color: "rgba(255,255,255,0.4)",
+              }}
+            >
+              {lightbox + 1} / {POSTS.length}
+            </p>
+          </div>
+
+          {/* Fechar */}
+          <button
+            onClick={close}
+            aria-label="Fechar"
+            style={{
+              position: "fixed",
+              top: 20,
+              right: 20,
+              background: "rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: "50%",
+              width: 44,
+              height: 44,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              color: "#fff",
+              fontSize: 22,
+              lineHeight: 1,
+            }}
+          >
+            ×
+          </button>
+
+          {/* Anterior */}
+          <button
+            onClick={(e) => { e.stopPropagation(); prev(); }}
+            aria-label="Foto anterior"
+            style={{
+              position: "fixed",
+              left: 16,
+              top: "50%",
+              transform: "translateY(-50%)",
+              background: "rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: "50%",
+              width: 44,
+              height: 44,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              color: "#fff",
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+
+          {/* Próxima */}
+          <button
+            onClick={(e) => { e.stopPropagation(); next(); }}
+            aria-label="Próxima foto"
+            style={{
+              position: "fixed",
+              right: 16,
+              top: "50%",
+              transform: "translateY(-50%)",
+              background: "rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: "50%",
+              width: 44,
+              height: 44,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              color: "#fff",
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes igLbIn {
+          from { opacity: 0 }
+          to   { opacity: 1 }
+        }
+      `}</style>
     </section>
   );
 }

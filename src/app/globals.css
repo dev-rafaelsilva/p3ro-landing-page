@@ -534,6 +534,9 @@ section {
 @keyframes marquee {
   to { transform: translateX(-50%); }
 }
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
 /* ── Header ── */
 .header-blur {
@@ -622,6 +625,26 @@ section {
 .btn-magnetic {
   display: inline-flex;
   will-change: transform;
+}
+
+/* ── Cursor: estado sobre foto ── */
+.cursor-dot[data-photo="true"] {
+  width: 56px; height: 56px;
+  background: transparent;
+  border: 1px solid var(--color-acc);
+  mix-blend-mode: normal;
+}
+
+/* ── Ripple WhatsApp ── */
+@keyframes ripple-out {
+  from { transform: scale(0.5); opacity: 0.5; }
+  to   { transform: scale(2.5); opacity: 0; }
+}
+
+/* ── Gradient drift (Hero) ── */
+@keyframes gradient-drift {
+  from { transform: translateX(-8%) translateY(-4%) scale(1); }
+  to   { transform: translateX(8%) translateY(4%) scale(1.18); }
 }
 
 /* ── Reduced motion ── */

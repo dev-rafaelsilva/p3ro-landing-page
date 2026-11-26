@@ -38,6 +38,8 @@ export default function HeroWebGL() {
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const imgInnerRef = useRef<HTMLDivElement>(null);
+  const textColRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const magPrimary = useMagnetic<HTMLAnchorElement>();
   const magOutline = useMagnetic<HTMLAnchorElement>();
 
@@ -45,23 +47,68 @@ export default function HeroWebGL() {
     if (reduce || !sectionRef.current || !imgInnerRef.current) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        imgInnerRef.current,
-        { yPercent: -8 },
-        {
-          yPercent: 8,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1.4,
-          },
-        }
-      );
+      // Parallax da foto
+      gsap.fromTo(imgInnerRef.current, { yPercent: -8 }, {
+        yPercent: 8, ease: "none",
+        scrollTrigger: { trigger: sectionRef.current, start: "top top", end: "bottom top", scrub: 1.4 },
+      });
+      // Parallax do texto (velocidade diferente — cria profundidade)
+      if (textColRef.current) {
+        gsap.fromTo(textColRef.current, { yPercent: 0 }, {
+          yPercent: -6, ease: "none",
+          scrollTrigger: { trigger: sectionRef.current, start: "top top", end: "bottom top", scrub: 1.8 },
+        });
+      }
     }, sectionRef);
 
     return () => ctx.revert();
+  }, [reduce]);
+
+  // Partículas bokeh no canvas
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || reduce) return;
+    const ctx2d = canvas.getContext("2d");
+    if (!ctx2d) return;
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const particles = Array.from({ length: 28 }, () => ({
+      x: Math.random(), y: Math.random(),
+      r: Math.random() * 2 + 0.5,
+      vx: (Math.random() - 0.5) * 0.0003,
+      vy: (Math.random() - 0.5) * 0.0003,
+      opacity: Math.random() * 0.08 + 0.02,
+    }));
+
+    let raf: number;
+    let lastTime = 0;
+    const FPS = 30;
+    const INTERVAL = 1000 / FPS;
+    const render = (now: number) => {
+      raf = requestAnimationFrame(render);
+      if (now - lastTime < INTERVAL) return;
+      lastTime = now;
+      const w = canvas.width, h = canvas.height;
+      ctx2d.clearRect(0, 0, w, h);
+      particles.forEach((p) => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = 1; if (p.x > 1) p.x = 0;
+        if (p.y < 0) p.y = 1; if (p.y > 1) p.y = 0;
+        ctx2d.beginPath();
+        ctx2d.arc(p.x * w, p.y * h, p.r, 0, Math.PI * 2);
+        ctx2d.fillStyle = `rgba(200,169,110,${p.opacity})`;
+        ctx2d.fill();
+      });
+    };
+    raf = requestAnimationFrame(render);
+
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
   }, [reduce]);
 
   const containerProps = reduce
@@ -74,6 +121,29 @@ export default function HeroWebGL() {
       aria-labelledby="hero-title"
       style={{ position: "relative", overflow: "hidden", minHeight: "100svh" }}
     >
+      {/* Canvas de partículas bokeh */}
+      {!reduce && (
+        <canvas
+          ref={canvasRef}
+          aria-hidden="true"
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 1 }}
+        />
+      )}
+      {/* Gradient drift atmosférico */}
+      {!reduce && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            top: "10%", left: "5%",
+            width: "55%", height: "70%",
+            background: "radial-gradient(closest-side, rgba(200,169,110,.07), transparent)",
+            animation: "gradient-drift 14s ease-in-out infinite alternate",
+            pointerEvents: "none",
+            zIndex: 1,
+          }}
+        />
+      )}
       {/* Layout grid: texto à esq, foto à dir */}
       <div
         style={{
@@ -85,6 +155,7 @@ export default function HeroWebGL() {
       >
         {/* ── Coluna esquerda: texto ── */}
         <motion.div
+          ref={textColRef}
           {...containerProps}
           style={{
             display: "flex",
@@ -271,6 +342,7 @@ export default function HeroWebGL() {
               alt={hero.image.alt}
               fill
               priority
+              fetchPriority="high"
               sizes="(max-width: 800px) 100vw, 50vw"
               className="object-cover"
               style={{ objectPosition: "center 20%" }}

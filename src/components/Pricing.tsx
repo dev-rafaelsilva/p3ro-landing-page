@@ -1,8 +1,10 @@
 "use client";
 
+import { useRef } from "react";
 import { motion } from "framer-motion";
-import { pricing } from "@/data/site";
+import { pricing, site } from "@/data/site";
 import { useReveal } from "./anim";
+import LineReveal from "./LineReveal";
 
 export default function Pricing() {
   const reveal = useReveal();
@@ -12,13 +14,14 @@ export default function Pricing() {
       <div className="container">
         <motion.div {...reveal} style={{ maxWidth: "52ch", marginBottom: "clamp(48px, 7vw, 88px)" }}>
           <p className="eyebrow">{pricing.eyebrow}</p>
-          <h2
+          <LineReveal
+            as="h2"
             id="precos-title"
             className="title-lg"
             style={{ marginTop: "clamp(14px, 2vw, 20px)", color: "var(--color-light-ink)" }}
           >
             {pricing.title}
-          </h2>
+          </LineReveal>
         </motion.div>
 
         {/* Layout: 3 cards editoriais — sem simetria forçada */}
@@ -55,8 +58,39 @@ export default function Pricing() {
 function PriceCard({ item }: { item: (typeof pricing.packages)[number] }) {
   const reveal = useReveal();
   const hi = item.highlight;
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const el = wrapRef.current;
+    if (!el) return;
+    const { left, top, width, height } = el.getBoundingClientRect();
+    const x = (e.clientX - left) / width - 0.5;
+    const y = (e.clientY - top) / height - 0.5;
+    el.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg) scale(1.015)`;
+  }
+
+  function handleMouseLeave() {
+    if (wrapRef.current) {
+      wrapRef.current.style.transform = "perspective(700px) rotateY(0deg) rotateX(0deg) scale(1)";
+    }
+  }
+
+  function handleWants() {
+    const msg = `Olá Gustavo! Tenho interesse no pacote *${item.name}* (${item.duration} · ${item.price}). Pode me enviar mais detalhes?`;
+    window.open(
+      `https://wa.me/55${site.whatsapp}?text=${encodeURIComponent(msg)}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
 
   return (
+    <div
+      ref={wrapRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ transition: "transform 0.12s ease", willChange: "transform", transformOrigin: "center center" }}
+    >
     <motion.div
       {...reveal}
       className={`price-card${hi ? " highlight" : ""}`}
@@ -181,19 +215,21 @@ function PriceCard({ item }: { item: (typeof pricing.packages)[number] }) {
         ))}
       </ul>
 
-      <a
-        href="#contato"
+      <button
+        onClick={handleWants}
         className="btn"
         style={{
           width: "100%",
           background: hi ? "var(--color-light-ink)" : "transparent",
           color: hi ? "var(--color-cream)" : "var(--color-light-ink)",
           border: `1px solid ${hi ? "var(--color-light-ink)" : "var(--color-light-line)"}`,
+          cursor: "pointer",
         }}
         data-cursor
       >
         Quero este
-      </a>
+      </button>
     </motion.div>
+    </div>
   );
 }

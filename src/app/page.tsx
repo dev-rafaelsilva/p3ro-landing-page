@@ -10,7 +10,6 @@ import PolaroidGallery from "@/components/PolaroidGallery";
 import Process from "@/components/Process";
 import Manifesto from "@/components/Manifesto";
 import Area from "@/components/Area";
-import Stats from "@/components/Stats";
 import BeforeAfter from "@/components/BeforeAfter";
 import Services from "@/components/Services";
 import Pricing from "@/components/Pricing";
@@ -24,6 +23,7 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 import ChatWidget from "@/components/ChatWidget";
 import BackToTop from "@/components/BackToTop";
 import MobileBar from "@/components/MobileBar";
+import SectionDots from "@/components/SectionDots";
 
 export default function Home() {
   return (
@@ -41,7 +41,6 @@ export default function Home() {
         <Process />
         <Manifesto />
         <Area />
-        <Stats />
         <BeforeAfter />
         <Services />
         <Pricing />
@@ -56,6 +55,7 @@ export default function Home() {
       <ChatWidget />
       <BackToTop />
       <MobileBar />
+      <SectionDots />
     </>
   );
 }

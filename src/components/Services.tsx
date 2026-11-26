@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { services } from "@/data/site";
 import { useReveal } from "./anim";
+import LineReveal from "./LineReveal";
 
 export default function Services() {
   const reveal = useReveal();
@@ -16,13 +17,14 @@ export default function Services() {
       <div className="container">
         <motion.div {...reveal} style={{ maxWidth: "52ch", marginBottom: "clamp(48px, 7vw, 88px)" }}>
           <p className="eyebrow">{services.eyebrow}</p>
-          <h2
+          <LineReveal
+            as="h2"
             id="servicos-title"
             className="title-lg"
             style={{ marginTop: "clamp(14px, 2vw, 20px)" }}
           >
             {services.title}
-          </h2>
+          </LineReveal>
         </motion.div>
 
         <div>

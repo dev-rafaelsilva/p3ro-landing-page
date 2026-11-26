@@ -6,11 +6,6 @@ import { EASE } from "./anim";
 
 const CITIES = [
   { name: "Ribeirão Preto", primary: true },
-  { name: "Franca", primary: false },
-  { name: "São Carlos", primary: false },
-  { name: "Araraquara", primary: false },
-  { name: "Bauru", primary: false },
-  { name: "Interior SP", primary: false },
 ];
 
 const PIN_ICON = (
@@ -69,9 +64,8 @@ export default function Area() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
             >
-              Ribeirão Preto e{" "}
               <em style={{ fontStyle: "italic", color: "var(--color-acc)", fontWeight: 300 }}>
-                região
+                Ribeirão Preto
               </em>
             </motion.h2>
 
@@ -82,7 +76,7 @@ export default function Area() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: EASE, delay: 0.2 }}
             >
-              Atendo presencialmente no interior paulista. Para projetos especiais, estou disponível para viagens.
+              Atendo presencialmente em Ribeirão Preto. Para projetos especiais, estou disponível para viagens.
             </motion.p>
           </div>
 

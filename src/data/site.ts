@@ -134,7 +134,7 @@ export const contact = {
 } as const;
 
 export const footer = {
-  ctaTitle: "Vamos fotografar o seu próximo prato?",
+  ctaTitle: "Imagens que despertam apetite e vendem mais.",
   ctaText: "Imagens que despertam apetite e vendem mais. Peça um orçamento sem compromisso.",
   cta: "Falar no WhatsApp",
   rights: "Todos os direitos reservados.",
