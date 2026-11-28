@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { contact, site } from "@/data/site";
 import { useReveal } from "./anim";
@@ -12,6 +12,11 @@ export default function Contact() {
   const [date, setDate] = useState("");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [today, setToday] = useState("");
+
+  useEffect(() => {
+    setToday(new Date().toISOString().split("T")[0]);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,9 +41,6 @@ export default function Contact() {
       setLoading(false);
     }, 1500);
   };
-
-  // Data mínima = hoje
-  const today = new Date().toISOString().split("T")[0];
 
   return (
     <section id="contato" aria-labelledby="contato-title" className="section">
